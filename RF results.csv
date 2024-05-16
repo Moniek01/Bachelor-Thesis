@@ -1,0 +1,7 @@
+dataset,best parameters,accuracy,precision,recall,f1,contingency matrix
+Neck,"{'smote__k_neighbors': 4, 'rf__n_estimators': 1000, 'rf__min_samples_split': 5, 'rf__min_samples_leaf': 1, 'rf__max_features': None, 'rf__max_depth': 10, 'rf__criterion': 'entropy'}",0.961439588688946,0.9613629775354875,0.961439588688946,0.9613938756983185,"[[263   7]
+ [  8 111]]"
+Waist,"{'smote__k_neighbors': 3, 'rf__n_estimators': 50, 'rf__min_samples_split': 5, 'rf__min_samples_leaf': 4, 'rf__max_features': 'sqrt', 'rf__max_depth': 18, 'rf__criterion': 'log_loss'}",0.9722222222222222,0.972638146167558,0.9722222222222222,0.9723666734202292,"[[217   5]
+ [  3  63]]"
+Wrist,"{'smote__k_neighbors': 3, 'rf__n_estimators': 50, 'rf__min_samples_split': 5, 'rf__min_samples_leaf': 4, 'rf__max_features': 'sqrt', 'rf__max_depth': 18, 'rf__criterion': 'log_loss'}",0.9564032697547684,0.9576126473097263,0.9564032697547684,0.9568436204569041,"[[285  10]
+ [  6  66]]"

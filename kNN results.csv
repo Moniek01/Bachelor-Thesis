@@ -1,0 +1,7 @@
+dataset,best parameters,accuracy,precision,recall,f1,contingency matrix
+Neck,"{'smote__k_neighbors': 5, 'knn__weights': 'distance', 'knn__p': 1, 'knn__n_neighbors': 6}",0.9588688946015425,0.9604981185275858,0.9588688946015425,0.9592284366317385,"[[258  12]
+ [  4 115]]"
+Waist,"{'smote__k_neighbors': 5, 'knn__weights': 'distance', 'knn__p': 1, 'knn__n_neighbors': 6}",0.9479166666666666,0.9556999878868633,0.9479166666666666,0.9494659572765821,"[[208  14]
+ [  1  65]]"
+Wrist,"{'smote__k_neighbors': 10, 'knn__weights': 'distance', 'knn__p': 1, 'knn__n_neighbors': 10}",0.9264305177111717,0.9387652193007009,0.9264305177111717,0.9294942989726706,"[[272  23]
+ [  4  68]]"
