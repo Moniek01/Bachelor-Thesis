@@ -15,4 +15,5 @@ The goal of this project is to train and test three machine learning models (kNN
 - RF results.csv: the test results after running RF.py
 - kNN.py: a python file containing the code for the training and testing of the k-Nearest Neighbors Classifier
 - kNN results.csv: the test results after running kNN.py
-- Results visualizations.ipynb: a python notebook containing the visualizations of the test results from GB.py, RF.py, and kNN.py
+- Results visualizations.ipynb: a python notebook containing the confusion matrices of the test results from GB.py, RF.py, and kNN.py
+- Loss Decrement.ipynb: a python notebook containing the visualization of the trend of loss function decrement for gradient boosting
