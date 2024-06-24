@@ -11,6 +11,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
+from sklearn.metrics import log_loss
 from sklearn.metrics.cluster import contingency_matrix
 
 smote = SMOTE(random_state=0)
@@ -30,7 +31,7 @@ scorers = {'accuracy': 'accuracy',
            'recall': make_scorer(recall_score, average='weighted'),
            'f1_score': make_scorer(f1_score, average='weighted')}
 
-results = {'dataset': [], 'best parameters': [], 'accuracy': [], 'precision': [], 'recall': [], 'f1': [], 'contingency matrix': []}
+results = {'dataset': [], 'best parameters': [], 'accuracy': [], 'precision': [], 'recall': [], 'f1': [], 'contingency matrix': [], 'loss_values_train': [], 'loss_values_test': [], 'n_estimators': []}
 
 # Neck
 Neck = pd.read_pickle('Neck.pkl')
@@ -50,6 +51,15 @@ X_test = np.delete(X_test, 0, axis = 1)
 random_search_neck = RandomizedSearchCV(pipeline, param_distributions=param_grid, n_iter=10, cv=logo, scoring=scorers, refit='f1_score', random_state=0)
 random_search_neck.fit(X_train, y_train, groups=groups)
 
+best_neck = random_search_neck.best_estimator_.named_steps['gb']
+# Get loss function values for each boosting stage
+loss_values_train = np.zeros((best_neck.n_estimators,), dtype=np.float64)
+loss_values_test = np.zeros((best_neck.n_estimators,), dtype=np.float64)
+for i, y_pred in enumerate(best_neck.staged_predict_proba(X_train)):
+	loss_values_train[i] = log_loss(y_train, y_pred)
+for i, y_pred in enumerate(best_neck.staged_predict_proba(X_test)):
+	loss_values_test[i] = log_loss(y_test, y_pred)
+
 y_pred = random_search_neck.predict(X_test)
 results['dataset'].append('Neck')
 results['best parameters'].append(random_search_neck.best_params_)
@@ -58,6 +68,9 @@ results['precision'].append(precision_score(y_test, y_pred, average = 'weighted'
 results['recall'].append(recall_score(y_test, y_pred, average = 'weighted'))
 results['f1'].append(f1_score(y_test, y_pred, average = 'weighted'))
 results['contingency matrix'].append(contingency_matrix(y_test, y_pred))
+results['loss_values_train'].append(loss_values_train)
+results['loss_values_test'].append(loss_values_test)
+results['n_estimators'].append(best_neck.n_estimators)
 
 # Waist
 Waist = pd.read_pickle('Waist.pkl')
@@ -77,7 +90,16 @@ X_test = np.delete(X_test, 0, axis = 1)
 random_search_waist = RandomizedSearchCV(pipeline, param_distributions=param_grid, n_iter=10, cv=logo, scoring=scorers, refit='f1_score', random_state=0)
 random_search_waist.fit(X_train, y_train, groups=groups)
 
-y_pred = random_search_waist.predict(X_test)
+best_waist = random_search_waist.best_estimator_.named_steps['gb']
+# Get loss function values for each boosting stage
+loss_values_train = np.zeros((best_waist.n_estimators,), dtype=np.float64)
+loss_values_test = np.zeros((best_waist.n_estimators,), dtype=np.float64)
+for i, y_pred in enumerate(best_waist.staged_predict_proba(X_train)):
+        loss_values_train[i] = log_loss(y_train, y_pred)
+for i, y_pred in enumerate(best_waist.staged_predict_proba(X_test)):
+        loss_values_test[i] = log_loss(y_test, y_pred)
+
+y_pred = best_waist.predict(X_test)
 results['dataset'].append('Waist')
 results['best parameters'].append(random_search_waist.best_params_)
 results['accuracy'].append(accuracy_score(y_test, y_pred))
@@ -85,6 +107,9 @@ results['precision'].append(precision_score(y_test, y_pred, average = 'weighted'
 results['recall'].append(recall_score(y_test, y_pred, average = 'weighted'))
 results['f1'].append(f1_score(y_test, y_pred, average = 'weighted'))
 results['contingency matrix'].append(contingency_matrix(y_test, y_pred))
+results['loss_values_train'].append(loss_values_train)
+results['loss_values_test'].append(loss_values_test)
+results['n_estimators'].append(best_waist.n_estimators)
 
 # Wrist
 Wrist = pd.read_pickle('Wrist.pkl')
@@ -104,6 +129,15 @@ X_test = np.delete(X_test, 0, axis = 1)
 random_search_wrist = RandomizedSearchCV(pipeline, param_distributions=param_grid, n_iter=10, cv=logo, scoring=scorers, refit='f1_score', random_state=0)
 random_search_wrist.fit(X_train, y_train, groups=groups)
 
+best_wrist = random_search_wrist.best_estimator_.named_steps['gb']
+# Get loss function values for each boosting stage
+loss_values_train = np.zeros((best_wrist.n_estimators,), dtype=np.float64)
+loss_values_test = np.zeros((best_wrist.n_estimators,), dtype=np.float64)
+for i, y_pred in enumerate(best_wrist.staged_predict_proba(X_train)):
+        loss_values_train[i] = log_loss(y_train, y_pred)
+for i, y_pred in enumerate(best_wrist.staged_predict_proba(X_test)):
+        loss_values_test[i] = log_loss(y_test, y_pred)
+
 y_pred = random_search_wrist.predict(X_test)
 results['dataset'].append('Wrist')
 results['best parameters'].append(random_search_wrist.best_params_)
@@ -112,6 +146,9 @@ results['precision'].append(precision_score(y_test, y_pred, average = 'weighted'
 results['recall'].append(recall_score(y_test, y_pred, average = 'weighted'))
 results['f1'].append(f1_score(y_test, y_pred, average = 'weighted'))
 results['contingency matrix'].append(contingency_matrix(y_test, y_pred))
+results['loss_values_train'].append(loss_values_train)
+results['loss_values_test'].append(loss_values_test)
+results['n_estimators'].append(best_wrist.n_estimators)
 
 # Get the results
 df = pd.DataFrame(results)
